@@ -30,7 +30,9 @@ class ProductLocalDatasource {
         price INTEGER,
         stock INTEGER,
         image TEXT,
-        category TEXT
+        category TEXT,
+        is_best_seller INTEGER,
+        is_sync INTEGER DEFAULT 0
       )
     ''');
   }
@@ -38,15 +40,17 @@ class ProductLocalDatasource {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _initDB('pos1.db');
+    _database = await _initDB('pos3.db');
     return _database!;
   }
 
+  //Remove all data product
   Future<void> removeAllProduct() async {
     final db = await instance.database;
     await db.delete(tableProducts);
   }
 
+  //Insert data Product from list product
   Future<void> insertAllProduct(List<Product> products) async {
     final db = await instance.database;
     for (var product in products) {
@@ -54,6 +58,14 @@ class ProductLocalDatasource {
     }
   }
 
+  //Insert data product
+  Future<Product> insertProduct(Product product) async {
+    final db = await instance.database;
+    int id = await db.insert(tableProducts, product.toMap());
+    return product.copyWith(id: id);
+  }
+
+  //Get All Data Product
   Future<List<Product>> getAllProduct() async {
     final db = await instance.database;
     final result = await db.query(tableProducts);

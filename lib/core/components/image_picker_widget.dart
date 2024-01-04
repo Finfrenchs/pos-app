@@ -91,7 +91,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
                   width: 127.0,
                   onPressed: _pickImage,
                   label: 'Choose Photo',
-                  fontSize: 12.0,
+                  fontSize: 10.0,
                   borderRadius: 5.0,
                 ),
               ),

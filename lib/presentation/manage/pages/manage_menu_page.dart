@@ -4,6 +4,7 @@ import 'package:pos_app/core/components/buttons.dart';
 import 'package:pos_app/core/extensions/build_context_ext.dart';
 import 'package:pos_app/data/datasources/product_local_datasource.dart';
 import 'package:pos_app/presentation/home/bloc/product/product_bloc.dart';
+import 'package:pos_app/presentation/manage/pages/manage_products_page.dart';
 
 import '../../../core/assets/assets.gen.dart';
 import '../../../core/components/menu_button.dart';
@@ -35,7 +36,9 @@ class ManageMenuPage extends StatelessWidget {
                 MenuButton(
                   iconPath: Assets.images.manageProduct.path,
                   label: 'Kelola Produk',
-                  onPressed: () {},
+                  onPressed: () {
+                    context.push(const ManageProductsPage());
+                  },
                   isImage: true,
                 ),
                 const SpaceWidth(15.0),

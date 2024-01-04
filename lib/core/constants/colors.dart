@@ -13,6 +13,8 @@ class AppColors {
   /// light = #C7D0EB
   static const Color blueLight = Color(0xffC7D0EB);
 
+  static const Color purpleLight = Color.fromARGB(255, 213, 199, 235);
+
   /// black = #000000
   static const Color black = Color(0xff000000);
 
