@@ -64,7 +64,7 @@ class ManageMenuPage extends StatelessWidget {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Sync Data Success'),
-                        backgroundColor: AppColors.green,
+                        backgroundColor: AppColors.primary,
                       ),
                     );
                   },
@@ -75,6 +75,7 @@ class ManageMenuPage extends StatelessWidget {
                         backgroundColor: AppColors.red,
                       ),
                     );
+                    print(_.message);
                   },
                 );
               },
@@ -91,9 +92,7 @@ class ManageMenuPage extends StatelessWidget {
                     );
                   },
                   loading: () {
-                    return const CircularProgressIndicator(
-                      backgroundColor: AppColors.primary,
-                    );
+                    return const CircularProgressIndicator();
                   },
                 );
               },

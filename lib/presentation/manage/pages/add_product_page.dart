@@ -1,8 +1,6 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pos_app/core/extensions/int_ext.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pos_app/core/extensions/string_ext.dart';
 import 'package:pos_app/data/models/response/product_response_model.dart';
 import 'package:pos_app/presentation/home/bloc/product/product_bloc.dart';
@@ -27,7 +25,9 @@ class _AddProductPageState extends State<AddProductPage> {
   TextEditingController? stockController;
 
   String category = 'food';
-  File? imageFile;
+
+  XFile? imageFile;
+
   bool isBestSeller = false;
 
   final List<CategoryModel> categories = [
@@ -95,6 +95,7 @@ class _AddProductPageState extends State<AddProductPage> {
             keyboardType: TextInputType.number,
           ),
           const SpaceHeight(20.0),
+          //isBestSeller
           Row(
             children: [
               Checkbox(
@@ -120,7 +121,7 @@ class _AddProductPageState extends State<AddProductPage> {
           const SpaceHeight(24.0),
           BlocConsumer<ProductBloc, ProductState>(
             listener: (context, state) {
-              state.maybeWhen(
+              state.maybeMap(
                 orElse: () {},
                 success: (_) {
                   Navigator.pop(context);
@@ -150,11 +151,12 @@ class _AddProductPageState extends State<AddProductPage> {
                         price: price,
                         stock: stock,
                         category: category,
-                        image: imageFile!.absolute.path,
+                        isBestSeller: isBestSeller,
+                        image: imageFile!.path,
                       );
                       context
                           .read<ProductBloc>()
-                          .add(ProductEvent.addProduct(product));
+                          .add(ProductEvent.addProduct(product, imageFile!));
                     },
                     label: 'Simpan',
                   );

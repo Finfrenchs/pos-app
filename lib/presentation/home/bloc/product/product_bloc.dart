@@ -1,9 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pos_app/data/datasources/product_local_datasource.dart';
 
 import 'package:pos_app/data/datasources/product_remote_datasource.dart';
+import 'package:pos_app/data/models/request/product_request_model.dart';
 
 import '../../../../data/models/response/product_response_model.dart';
 
@@ -51,11 +55,28 @@ class ProductBloc extends Bloc<ProductEvent, ProductState> {
 
     on<_AddProduct>((event, emit) async {
       emit(const _Loading());
-      final newProduct =
-          await ProductLocalDatasource.instance.insertProduct(event.product);
-      products.add(newProduct);
 
-      emit(_Success(products));
+      //final XFile imageFile = XFile(event.product.image);
+
+      final requestData = ProductRequestModel(
+        name: event.product.name,
+        price: event.product.price,
+        stock: event.product.stock,
+        category: event.product.category,
+        isBestSeller: event.product.isBestSeller ? 1 : 0,
+        image: event.image,
+      );
+
+      final response = await _datasource.addProducts(requestData);
+      //products.add(newProduct);
+
+      response.fold(
+        (l) => emit(_Error(l)),
+        (r) {
+          products.add(r.data);
+          emit(_Success(products));
+        },
+      );
     });
   }
 }

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 // import '../../../core/components/spaces.dart';
 import '../../../core/components/spaces.dart';
 import '../../../core/constants/colors.dart';
+import 'package:badges/badges.dart' as badges;
 
-
+import '../bloc/checkout/checkout_bloc.dart';
 
 class NavItem extends StatelessWidget {
   final String iconPath;
@@ -29,17 +31,78 @@ class NavItem extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          SizedBox(
-            width: 25.0,
-            height: 25.0,
-            child: SvgPicture.asset(
-              iconPath,
-              colorFilter: ColorFilter.mode(
-                isActive ? AppColors.black : AppColors.disabled,
-                BlendMode.srcIn,
-              ),
-            ),
-          ),
+          label == 'Orders'
+              ? BlocBuilder<CheckoutBloc, CheckoutState>(
+                  builder: (context, state) {
+                    return state.maybeWhen(
+                      orElse: () {
+                        return SizedBox(
+                          width: 25.0,
+                          height: 25.0,
+                          child: SvgPicture.asset(
+                            iconPath,
+                            colorFilter: ColorFilter.mode(
+                              isActive ? AppColors.black : AppColors.disabled,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        );
+                      },
+                      success: (products, totalQuantity, totalPrice) {
+                        if (products.isEmpty) {
+                          return SizedBox(
+                            width: 25.0,
+                            height: 25.0,
+                            child: SvgPicture.asset(
+                              iconPath,
+                              colorFilter: ColorFilter.mode(
+                                isActive ? AppColors.black : AppColors.disabled,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                          );
+                        } else {
+                          return badges.Badge(
+                            badgeStyle: const badges.BadgeStyle(
+                                badgeColor: AppColors.primary,
+                                padding: EdgeInsets.all(6)),
+                            badgeContent: Text(
+                              '$totalQuantity',
+                              style: const TextStyle(
+                                color: AppColors.white,
+                                fontSize: 12,
+                              ),
+                            ),
+                            child: SizedBox(
+                              width: 25.0,
+                              height: 25.0,
+                              child: SvgPicture.asset(
+                                iconPath,
+                                colorFilter: ColorFilter.mode(
+                                  isActive
+                                      ? AppColors.primary
+                                      : AppColors.disabled,
+                                  BlendMode.srcIn,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                      },
+                    );
+                  },
+                )
+              : SizedBox(
+                  width: 25.0,
+                  height: 25.0,
+                  child: SvgPicture.asset(
+                    iconPath,
+                    colorFilter: ColorFilter.mode(
+                      isActive ? AppColors.primary : AppColors.disabled,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
           const SpaceHeight(4.0),
           Text(
             label,
