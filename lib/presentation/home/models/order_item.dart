@@ -18,6 +18,15 @@ class OrderItem {
     };
   }
 
+  Map<String, dynamic> toMapForLocal(int orderId) {
+    return {
+      'id_order': orderId,
+      'id_product': product.id,
+      'quantity': quantity,
+      'price': product.price,
+    };
+  }
+
   factory OrderItem.fromMap(Map<String, dynamic> map) {
     return OrderItem(
       product: Product.fromMap(map['product'] as Map<String, dynamic>),

@@ -5,6 +5,7 @@ import 'package:pos_app/core/extensions/build_context_ext.dart';
 import 'package:pos_app/data/datasources/product_local_datasource.dart';
 import 'package:pos_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:pos_app/presentation/manage/pages/manage_products_page.dart';
+import 'package:pos_app/presentation/order/models/order_model.dart';
 
 import '../../../core/assets/assets.gen.dart';
 import '../../../core/components/menu_button.dart';
@@ -14,8 +15,6 @@ import '../../../data/datasources/auth_local_datasource.dart';
 import '../../auth/bloc/logout/logout_bloc.dart';
 import '../../auth/pages/login_page.dart';
 import 'manage_printer_page.dart';
-
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ManageMenuPage extends StatelessWidget {
   const ManageMenuPage({super.key});
@@ -149,6 +148,29 @@ class ManageMenuPage extends StatelessWidget {
                 );
               },
             ),
+            FutureBuilder<List<OrderModel>>(
+                future: ProductLocalDatasource.instance.getOrderByIsSync(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return Expanded(
+                        child: ListView.builder(
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          title:
+                              Text(snapshot.data![index].totalPrice.toString()),
+                        );
+                      },
+                      itemCount: snapshot.data!.length,
+                    ));
+                  } else {
+                    return Container(
+                      height: 20,
+                      width: 40,
+                      decoration: const BoxDecoration(color: Colors.red),
+                      child: const Text('Gagal'),
+                    );
+                  }
+                })
           ],
         ),
       ),

@@ -10,6 +10,7 @@ import 'package:pos_app/presentation/auth/bloc/logout/logout_bloc.dart';
 import 'package:pos_app/presentation/home/bloc/checkout/checkout_bloc.dart';
 import 'package:pos_app/presentation/home/bloc/product/product_bloc.dart';
 import 'package:pos_app/presentation/home/pages/dashboard_page.dart';
+import 'package:pos_app/presentation/order/bloc/bloc/order_bloc.dart';
 
 import 'presentation/auth/pages/login_page.dart';
 
@@ -36,6 +37,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: (context) => CheckoutBloc(),
+        ),
+        BlocProvider(
+          create: (context) => OrderBloc(),
         ),
       ],
       child: MaterialApp(

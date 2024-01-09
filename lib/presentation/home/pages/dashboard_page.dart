@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pos_app/core/constants/colors.dart';
 import 'package:pos_app/presentation/home/pages/home_page.dart';
 import 'package:pos_app/presentation/manage/pages/manage_menu_page.dart';
+import 'package:pos_app/presentation/order/pages/order_page.dart';
 
 import '../../../core/assets/assets.gen.dart';
 import '../widgets/nav_item.dart';
@@ -18,7 +19,7 @@ class _DashboardPageState extends State<DashboardPage> {
 
   final List<Widget> _pages = [
     const HomePage(),
-    const Center(child: Text("Orders Page")),
+    const OrderPage(),
     const Center(child: Text('History Page')),
     const ManageMenuPage(),
   ];
